@@ -263,28 +263,30 @@ app.put("/delete_article/:id", (req, res) => {
     });
 });
 
-app.put("/update_article", (req, res) => {
-    console.log("req.file", req.file);
+app.put("/update_article", upload.any(), (req, res) => {
     console.log("req.files", req.files);
     console.log("req.body", req.body);
-    /*
-        const id = req.body.id;
-        console.log("id_article =", id);
-        const title = req.body.title
-        const image = req.body.image
-        const description = req.body.description
 
-        db.query(
-            "UPDATE articles SET title= ?, image = ?, description = ?  WHERE deleted = 0 AND id_article = ?", [title, image, description, id],
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("gdgdgdg", result)
-                    res.send(result);
-                }
+    const id = req.body.id;
+    console.log("id_article =", id);
+    const title = req.body.title
+    let image = []
+    req.files.map((item) => {
+        image.push(item.filename);
+    });
+    const description = req.body.description
+
+    db.query(
+        "UPDATE articles SET title= ?,image = ?, description = ?  WHERE deleted = 0 AND id_article = ?", [title, image, description, id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("gdgdgdg", result)
+                res.send(result);
             }
-        );*/
+        }
+    );
 });
 app.listen(4001, () => {
     console.log('🌍server running in PORT 4001')
