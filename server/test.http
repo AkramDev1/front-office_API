@@ -1,0 +1,8 @@
+post   http://localhost:4001/ajouterArticle
+Content-Type: application/json
+
+{
+    "image":"logo.png",
+    "title":"hi",
+   "description":"testetstetstetstet"
+}

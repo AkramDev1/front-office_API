@@ -1,0 +1,108 @@
+.username {
+    text-align: center;
+    color: #0066ffa1;
+    margin-top: 50px;
+    font-size: 40px;
+}
+
+.user {
+    width: 500px;
+    height: 500px;
+    padding-top: 20px;
+    animation-name: user;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes user {
+    0% {
+        color: #0A66C2;
+    }
+    25% {
+        color: #1877F2;
+    }
+    50% {
+        color: #1AB7EA;
+    }
+    80% {
+        color: #1877F2;
+    }
+    100% {
+        color: #0A66C2;
+    }
+}
+
+.card-prof {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 360px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+}
+
+.title-prof {
+    color: grey;
+    font-size: 18px;
+}
+
+.btn-prof {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 25px;
+}
+
+.asoc-prof {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+}
+
+.soc-prof i.fab {
+    font-size: 38px;
+    margin-right: 21px;
+    background: none;
+    color: black;
+}
+
+.soc-prof i.fab:hover {
+    opacity: 1;
+    background-color: white;
+}
+
+.soc-prof i.fab.fa-twitter:hover {
+    color: #1DA1F2;
+}
+
+.soc-prof i.fab.fa-instagram:hover {
+    color: #E4405F;
+}
+
+.soc-prof i.fab.fa-linkedin:hover {
+    color: #0A66C2;
+}
+
+.soc-prof i.fab.fa-facebook:hover {
+    color: #1877F2;
+}
+
+.btn-prof:hover {
+    color: black;
+    background-color: white;
+    opacity: 1;
+}
+
+.prof {
+    width: 100%;
+}
+
+.soc-prof {
+    margin: 24px 0;
+}
