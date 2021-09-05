@@ -288,6 +288,18 @@ app.put("/update_article", upload.any(), (req, res) => {
         }
     );
 });
+
+//get image by id
+app.get("/single-article/:id", (req, res) => {
+    db.query("SELECT * FROM articles WHERE id_article = ?", req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result[0]);
+        }
+    });
+});
+
 app.listen(4001, () => {
     console.log('🌍server running in PORT 4001')
 })
