@@ -280,9 +280,9 @@ app.put("/update_article", upload.any(), (req, res) => {
         "UPDATE articles SET title= ?,image = ?, description = ?  WHERE deleted = 0 AND id_article = ?", [title, image, description, id],
         (err, result) => {
             if (err) {
-                console.log(err);
+                console.log('err: ', err);
             } else {
-                console.log("gdgdgdg", result)
+                console.log("result: ", result)
                 res.send(result);
             }
         }
