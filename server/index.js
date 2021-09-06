@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
-
+const moment = require("moment");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -238,7 +238,7 @@ app.post("/addNewArticle", upload.any(), (req, res) => {
 });
 
 app.get("/article", (req, res) => {
-    db.query("SELECT * FROM articles WHERE deleted = 0", (err, result) => {
+    db.query("SELECT * FROM articles WHERE deleted = 0 ORDER BY modify_at DESC", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -256,6 +256,17 @@ app.get("/article/:id", (req, res) => {
             res.send(result[0]);
             //ghadi t3sal ga3 hadouk li 3andhoum deleted = 0 et id_article = ""
             //{title:"......", id_article:"1", descriptin:""}
+        }
+    });
+});
+
+app.get("/question/:id", (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM questions WHERE id_article = ?", id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
         }
     });
 });
@@ -286,14 +297,15 @@ app.put("/update_article", upload.any(), (req, res) => {
         image.push(item.filename);
     });
     const description = req.body.description
+    const modify_at = req.body.modify
 
     db.query(
-        "UPDATE articles SET title= ?,image = ?, description = ?  WHERE deleted = 0 AND id_article = ?", [title, image, description, id],
+        `UPDATE articles SET title= ?,image = ?, description = ?, modify_at = '${moment().format('YYYY-MM-DD HH:mm:ss')}'  WHERE deleted = 0 AND id_article = ?`, [title, image, description, id],
         (err, result) => {
             if (err) {
                 console.log('err: ', err);
             } else {
-                console.log("result: ", result)
+                console.log("result sql: ", moment().format('YYYY-MM-DD HH:mm:ss'))
                 res.send(result);
             }
         }
