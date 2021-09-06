@@ -207,20 +207,31 @@ app.get("/profil/:id", (req, res) => {
 
 //////////////////////////////////////ARTICLE/////////////////////////////////
 
-app.post("/ajouterArticle", (req, res) => {
-    const image = req.body.image;
-    const title = req.body.title;
-    const description = req.body.description;
+app.post("/addNewArticle", upload.any(), (req, res) => {
+    console.log("req.files", req.files);
+    console.log("req.body", req.body);
+
+    let image = []
+    req.files.map((item) => {
+        image.push(item.filename);
+    });
+    // const image = req.file.filename;
+    // const image = req.body.image
+    // const image = req.files.image
+
+    const title = req.body.added_title
+    const description = req.body.added_description
 
 
     db.query(
-        "INSERT INTO articles VALUES (?,?,?)", [image, title, description],
+        "INSERT INTO articles (image ,title, description) VALUES (?,?,?)", [image, title, description],
         (err, result) => {
             if (err) {
                 console.log(err);
             } else {
-                // res.send();
-                console.log("Values Inserted", result);
+                console.log("result", result);
+                res.send(result);
+
             }
         }
     );
@@ -291,6 +302,16 @@ app.put("/update_article", upload.any(), (req, res) => {
 
 //get image by id
 app.get("/single-article/:id", (req, res) => {
+    db.query("SELECT * FROM articles WHERE id_article = ?", req.params.id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result[0]);
+        }
+    });
+});
+//get image without id
+app.get("/single-article", (req, res) => {
     db.query("SELECT * FROM articles WHERE id_article = ?", req.params.id, (err, result) => {
         if (err) {
             console.log(err);
