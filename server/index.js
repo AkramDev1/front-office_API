@@ -164,38 +164,38 @@ app.get("/employees", (req, res) => {
     });
 });
 
-app.put("/update", (req, res) => {
-    const id = req.body.id;
-    const message = req.body.message;
-    db.query(
-        "UPDATE contact SET message = ? WHERE id = ?", [message, id],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send(result);
-            }
-        }
-    );
-});
+// app.put("/update", (req, res) => {
+//     const id = req.body.id;
+//     const message = req.body.message;
+//     db.query(
+//         "UPDATE contact SET message = ? WHERE id = ?", [message, id],
+//         (err, result) => {
+//             if (err) {
+//                 console.log(err);
+//             } else {
+//                 res.send(result);
+//             }
+//         }
+//     );
+// });
 
-app.delete("/delete_contact/:id", (req, res) => {
-    const id = req.params.id;
-    db.query("DELETE FROM contact WHERE id = ?", id, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-});
+// app.delete("/delete_contact/:id", (req, res) => {
+//     const id = req.params.id;
+//     db.query("DELETE FROM contact WHERE id = ?", id, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             res.send(result);
+//         }
+//     });
+// });
 
 
 
 //reccuperer les donnees de profil
 app.get("/profil/:id", (req, res) => {
     const id = req.params.id;
-    db.query("SELECT fullName, username, email FROM registration  WHERE id = ? ", id, (err, result) => {
+    db.query("SELECT fullName, username, email FROM comptes  WHERE id = ? ", id, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -271,6 +271,19 @@ app.get("/question/:id", (req, res) => {
     });
 });
 
+app.get("/reponse/:id_user/:id_quest", (req, res) => {
+    const id_user = req.params.id_user;
+    const id_quest = req.params.id_quest;
+
+    db.query("SELECT * FROM reponses WHERE id_user = ? AND id_quest = ?", [id_user, id_quest], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 app.put("/delete_article/:id", (req, res) => {
     const id = req.params.id;
     db.query("UPDATE articles SET deleted = 1  WHERE id_article = ?", id, (err, result) => {
@@ -280,7 +293,6 @@ app.put("/delete_article/:id", (req, res) => {
             console.log(`xxxxxxxxxxxxxxxx`, result);
             res.send(result);
             //delete = 1
-            //
         }
     });
 });
@@ -332,7 +344,27 @@ app.get("/single-article", (req, res) => {
         }
     });
 });
+//"INSERT INTO questions (nom, prenom, tel, emailPro, message) VALUES (?,?,?,?,?)", [nom, prenom, tel, emailPro, message],
+
+//API responsesToQuestion
+app.post("/responsesToQuestion", (req, res) => {
+    const id_article = req.body.id_article;
+    const id_quest = req.body.id_quest;
+    const id_user = req.body.id_user;
+    const reponse = req.body.reponse;
+    db.query(
+        "INSERT INTO reponses (reponse, id_article, id_quest, id_user) VALUES (?, ?, ?, ?)", [reponse, id_article, id_quest, id_user],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Response Inserted", result);
+                res.send(result);
+            }
+        }
+    );
+});
 
 app.listen(4001, () => {
-    console.log('🌍server running in PORT 4001')
+    console.log('server running in PORT 4001')
 })

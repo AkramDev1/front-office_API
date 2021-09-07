@@ -1,8 +1,9 @@
-post   http://localhost:4001/ajouterArticle
+post   http://localhost:4001/responsesToQuestion
 Content-Type: application/json
 
 {
-    "image":"logo.png",
-    "title":"akramakramakram",
-    "description":"akramakram"
+    "reponse": "test reponse",
+    "id_article":"7",
+    "id_quest":"2",
+    "id_user":"46"
 }
