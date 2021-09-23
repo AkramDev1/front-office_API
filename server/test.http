@@ -1,9 +1,7 @@
-post   http://localhost:4001/responsesToQuestion
+post  http://localhost:4002/ 
 Content-Type: application/json
 
 {
-    "reponse": "test reponse",
-    "id_article":"7",
-    "id_quest":"2",
-    "id_user":"46"
+   "username":"test",
+   "password":"test" 
 }

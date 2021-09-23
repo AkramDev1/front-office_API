@@ -46,9 +46,7 @@ function Footerbar() {
                 <li><h3>SERVICE RÉCLAMATION</h3></li>
                 <li><img className="im" src={contact} alt="" /></li>
             </ol>
-            <div className="scrole">
-                <a  name="" id="scrol" class="btn-primary" href="#" role="button"><i class="fas fa-angle-double-up"></i></a>
-            </div>
+           
         </div> 
        
     </div>

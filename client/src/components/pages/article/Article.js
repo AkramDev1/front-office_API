@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react'
-import Navbar from '../../Navbar';
 import Footerbar from "../../footerbar/Footerbar"
 import axios from 'axios'
 import Articles from './Articles'
- 
+import {URL_API} from "../../../constant"
 import './ArticleStyle.css'
+import NavbarFix from '../../NavbarFix';
 export class Article extends Component {
         constructor(props) {
           super(props)
@@ -14,7 +14,7 @@ export class Article extends Component {
           }
         }
 componentDidMount(){
-      axios.get("http://localhost:4001/article", { })
+      axios.get(URL_API +"/article", { })
           .then((response) => {            
             this.setState({
               articles:response.data
@@ -32,7 +32,7 @@ componentDidMount(){
 
     return (
       <div>
-        <Navbar />
+        <NavbarFix />
          <div className="row">              
             {this.state.articles?.map(article => (
               <div className="col-md-6" >

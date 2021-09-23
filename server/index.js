@@ -47,17 +47,6 @@ db.connect((error) => {
     else console.log("DATABASE connected")
 })
 
-// //images ##multer
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, "./images");
-//     },
-//     filename: (req, file, cb) => {
-//         const ext = file.mimetype.split("/images")[1];
-//         cb(null, `uploads/${file.originalname}-${Date.now()}.${ext}`)
-//     }
-// });
-// const upload = multer({ storage: storage });
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, "uploads/");
@@ -70,6 +59,8 @@ var storage = multer.diskStorage({
     },
 });
 var upload = multer({ storage: storage });
+
+
 
 app.post("/image", upload.any('image'), (req, res, err) => {
     console.log(req.body);
@@ -132,16 +123,18 @@ app.post("/", (req, res) => {
     );
 });
 
-//ajouter les donnees de contact
-app.post("/create", (req, res) => {
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    const tel = req.body.tel;
-    const emailPro = req.body.emailPro;
-    const message = req.body.message;
-
+//ajouter les donnees de compte
+app.post("/compte", upload.any(), (req, res) => {
+    const fullName = req.body.fullName;
+    const username = req.body.username;
+    const email = req.body.email;
+    // let image = []
+    // req.files.map((item) => {
+    //     image.push(item.filename);
+    // });
+    const password = req.body.password;
     db.query(
-        "INSERT INTO questions (nom, prenom, tel, emailPro, message) VALUES (?,?,?,?,?)", [nom, prenom, tel, emailPro, message],
+        "INSERT INTO comptes (fullName, username, email, password) VALUES (?,?,?,?)", [fullName, username, email, password],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -152,50 +145,9 @@ app.post("/create", (req, res) => {
         }
     );
 });
-
-//reccuperer les donnees de profil
-app.get("/employees", (req, res) => {
-    db.query("SELECT * FROM contact", (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-});
-
-// app.put("/update", (req, res) => {
-//     const id = req.body.id;
-//     const message = req.body.message;
-//     db.query(
-//         "UPDATE contact SET message = ? WHERE id = ?", [message, id],
-//         (err, result) => {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 res.send(result);
-//             }
-//         }
-//     );
-// });
-
-// app.delete("/delete_contact/:id", (req, res) => {
-//     const id = req.params.id;
-//     db.query("DELETE FROM contact WHERE id = ?", id, (err, result) => {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.send(result);
-//         }
-//     });
-// });
-
-
-
-//reccuperer les donnees de profil
 app.get("/profil/:id", (req, res) => {
-    const id = req.params.id;
-    db.query("SELECT fullName, username, email FROM comptes  WHERE id = ? ", id, (err, result) => {
+    const id_user = req.params.id_user;
+    db.query("SELECT *  WHERE id_user = ? ", id_user, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -215,14 +167,8 @@ app.post("/addNewArticle", upload.any(), (req, res) => {
     req.files.map((item) => {
         image.push(item.filename);
     });
-    // const image = req.file.filename;
-    // const image = req.body.image
-    // const image = req.files.image
-
     const title = req.body.added_title
     const description = req.body.added_description
-
-
     db.query(
         "INSERT INTO articles (image ,title, description) VALUES (?,?,?)", [image, title, description],
         (err, result) => {
@@ -365,6 +311,24 @@ app.post("/responsesToQuestion", (req, res) => {
     );
 });
 
-app.listen(4001, () => {
-    console.log('server running in PORT 4001')
+app.post("/ajouterQuest/:id_article/:id_user", (req, res) => {
+    const id_user = req.params.id_user;
+    const id_article = req.params.id_article;
+    const question = req.body.question;
+    db.query(
+        "INSERT INTO questions (question, id_article, id_user) VALUES (?, ?, ?)", [question, id_article, id_user],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Question Inserted", result);
+                res.send(result);
+            }
+        }
+    );
+});
+
+
+app.listen(4002, () => {
+    console.log('server running in PORT 4002')
 })
