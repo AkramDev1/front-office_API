@@ -33,6 +33,7 @@ const SignUp = () => {
     e.preventDefault();
     if (isSignup) {
       dispatch(signup(form, history));
+      history.push('/home');
     } else {
       dispatch(signin(form, history));
     }

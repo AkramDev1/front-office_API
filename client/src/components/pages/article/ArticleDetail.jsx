@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Footerbar from "../../footerbar/Footerbar"
 import { URL_API } from '../../../constant';
-import Posequest from './Posequest';
 import './ArticleStyle.css'
 import NavbarFix from '../../NavbarFix';
 export class ArticleDetail extends Component {
@@ -10,10 +9,9 @@ export class ArticleDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
-         article:{
-
-         }, 
+         article:{}, 
          questions:[],
+         question:[],
          reponses:[]
         }
       }
@@ -46,58 +44,66 @@ export class ArticleDetail extends Component {
                 
             });
       }
-        
+      changHandeler =(e)=>{
+        this.setState({[e.target.name]: e.target.value})
+    }
+
+    submitHandler = e =>{
+        e.preventDefault()
+        axios.post(URL_API +`/ajouterQuest/${this.state.article.id_article}`,
+       this.state)
+        .then(res =>{
+            console.log("res", res);
+            this.setState(
+              {question:[]}
+          )
+        }).catch(err =>{
+            console.log(err);
+        })
+    } 
 
     render() { 
         const URL_IMAGES = URL_API +'/uploads'
-        console.log("question", this.state.questions);
+        const {question} = this.state;
         return (
             <>
             <NavbarFix />
-            {/* <article className="art" style={{margin:'15px'}}>  
-                <div className="par">
-                    <img src={`${URL_IMAGES+'/'+this.state.article.image}`} alt="usin" style={{width:'600px'}}/>
-                    <h3 style={{display:"flex"}}>
-                        {this.state.article.title} <h5 className="time"> {this.state.article.creat_at}</h5>
-                    </h3>
-                </div>
-                <p style={{width : '713px'}}> 
-                    {this.state.article.description}
-                </p>
-            </article> */}
                <div className="card mb-3 articl mt-4"  >
-  <div className="row g-0">
-    <div className="col-md-4">
-      <img src={`${URL_IMAGES+'/'+this.state.article.image}`} className="img-fluid rounded-start" alt="..." />
-    </div>
-    <div className="col-md-8">
-      <div className="card-body">
-        <h5 className="card-title">{this.state.article.title}</h5>
-        <p className="card-text"> {this.state.article.description}.</p>
-        <p className="card-text"><small className="text-muted">{this.state.article.creat_at}</small></p>
-      </div>
-    </div>
-  </div>
-</div>
+                <div className="row g-0">
+                    <div className="col-md-4">
+                    <img src={`${URL_IMAGES+'/'+this.state.article.image}`} className="img-fluid rounded-start" alt="..." />
+                    </div>
+                    <div className="col-md-8">
+                    <div className="card-body">
+                        <h5 className="card-title">{this.state.article.title}</h5>
+                        <p className="card-text"> {this.state.article.description}.</p>
+                        <p className="card-text"><small className="text-muted">{this.state.article.creat_at}</small></p>
+                    </div>
+                    </div>
+                </div>
+                </div>
 
             <article>
                 <div className="showQuest">
-                <Posequest />
-                    {this.state.questions?.map(element => (
-                        <div className="quest">
-                            {element[0].question}
-                            <div className="rep">
-                            {element[1]?.map(el =>(
-                                <div style={{display:'flex'}}>
-                                 <h3>{el.reponse}</h3>
-                                 </div>
-                            ))}
-                        </div>
-                        </div>
-                    ))}
-                    
+                <form onSubmit={this.submitHandler}>
+                    <div style={{display:"flex", justifyContent:"center"}}>
+                        <input className="areaQuest" value={question} onChange={this.changHandeler} name="question"/>
+                        <button class="myButton poseQuest" type="submit">POSER QUESTION</button>
+                    </div>
+                 </form>
+                {this.state.questions?.map(element => (
+                    <div className="quest">
+                        {element[0].question}
+                        <div className="rep">
+                        {element[1]?.map(el =>(
+                            <div style={{display:'flex'}}>
+                                <h3>{el.reponse}</h3>
+                                </div>
+                        ))}
+                    </div>
+                    </div>
+                ))} 
                 </div>
-
             </article>
 
             <Footerbar />

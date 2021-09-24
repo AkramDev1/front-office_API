@@ -311,12 +311,12 @@ app.post("/responsesToQuestion", (req, res) => {
     );
 });
 
-app.post("/ajouterQuest/:id_article/:id_user", (req, res) => {
+app.post("/ajouterQuest/:id_article", (req, res) => {
     const id_user = req.params.id_user;
     const id_article = req.params.id_article;
     const question = req.body.question;
     db.query(
-        "INSERT INTO questions (question, id_article, id_user) VALUES (?, ?, ?)", [question, id_article, id_user],
+        "INSERT INTO questions (question, id_article) VALUES ( ?, ?)", [question, id_article],
         (err, result) => {
             if (err) {
                 console.log(err);
