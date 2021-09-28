@@ -48,15 +48,17 @@ export class ArticleDetail extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
 
-    submitHandler = e =>{
+    submitHandler = (e) =>{
         e.preventDefault()
         axios.post(URL_API +`/ajouterQuest/${this.state.article.id_article}`,
        this.state)
         .then(res =>{
-            console.log("res", res);
+            
+            console.log("res", res);         
             this.setState(
               {question:[]}
           )
+          window.location.reload();
         }).catch(err =>{
             console.log(err);
         })
@@ -88,7 +90,7 @@ export class ArticleDetail extends Component {
                 <form onSubmit={this.submitHandler}>
                     <div style={{display:"flex", justifyContent:"center"}}>
                         <input className="areaQuest" value={question} onChange={this.changHandeler} name="question"/>
-                        <button class="myButton poseQuest" type="submit">POSER QUESTION</button>
+                        <button class="myButton poseQuest" type="submit" style={{ fontSize: '12px'}}>POSER QUESTION</button>
                     </div>
                  </form>
                 {this.state.questions?.map(element => (
